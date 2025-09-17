@@ -81,8 +81,9 @@ function App() {
                 if (isImage) {
                     setConfig(prev => ({ ...prev, image_path: imagePath }));
                     try {
-                        const fileData = await (window as any).fs.readFile(imagePath);
-                        const blob = new Blob([fileData], { type: 'image/jpeg' });
+                        const fileData = await invoke<number[]>('read_file_as_bytes', { path: imagePath });
+                        const uint8Array = new Uint8Array(fileData);
+                        const blob = new Blob([uint8Array]);
                         const dataUrl = URL.createObjectURL(blob);
                         setImagePreview(dataUrl);
                     } catch (readError) {
@@ -116,10 +117,10 @@ function App() {
             const selected = await invoke<string | null>('select_image_file');
             if (selected) {
                 setConfig(prev => ({ ...prev, image_path: selected }));
-                // Read file using Tauri's fs plugin
                 try {
-                    const fileData = await (window as any).fs.readFile(selected);
-                    const blob = new Blob([fileData], { type: 'image/jpeg' }); // Generic image type
+                    const fileData = await invoke<number[]>('read_file_as_bytes', { path: selected });
+                    const uint8Array = new Uint8Array(fileData);
+                    const blob = new Blob([uint8Array]);
                     const dataUrl = URL.createObjectURL(blob);
                     setImagePreview(dataUrl);
                 } catch (readError) {
@@ -213,8 +214,6 @@ function App() {
         setAppState('idle');
         setMessage('');
         setProgress(null);
-        setConfig(DefaultConfig)
-        setImagePreview(null)
     };
 
     const startFresh = () => {
@@ -307,7 +306,7 @@ function App() {
                             >
                                 {imagePreview ? (
                                     <div className="image-preview-container">
-                                        <img src={imagePreview} alt="Preview" className="image-preview" />
+                                        <div style={{ backgroundImage: `url(${imagePreview})` }} className="image-preview" />
                                         <div className="image-overlay">
                                             <div className="image-name">{getFileName(config.image_path)}</div>
                                             <div className="drop-hint">Click to change or drop new image</div>
@@ -332,11 +331,11 @@ function App() {
                     <button
                         className="main-btn"
                         onClick={startProcessing}
-                        disabled={appState === 'processing' || !config.image_path}
+                        disabled={appState === 'processing' || !config.image_path || !config.server_address || !config.secret || !config.layout_key || !config.background_color || !config.tile_size}
                     >
                         Start Processing
                     </button>
-                    <button className="second-btn" onClick={resetApp}>
+                    <button className="second-btn" onClick={startFresh}>
                         Cancel
                     </button>
                 </div>

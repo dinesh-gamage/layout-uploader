@@ -277,6 +277,11 @@ async fn cancel_processing(progress_state: State<'_, ProgressState>) -> Result<(
     Ok(())
 }
 
+#[tauri::command]
+async fn read_file_as_bytes(path: String) -> Result<Vec<u8>, String> {
+    std::fs::read(&path).map_err(|e| format!("Failed to read file: {}", e))
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
@@ -287,7 +292,8 @@ fn main() {
             select_image_file,
             start_processing,
             get_progress,
-            cancel_processing
+            cancel_processing,
+            read_file_as_bytes
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
