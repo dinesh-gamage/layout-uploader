@@ -1,383 +1,410 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  background-color: #1a1a1a;
-  color: #e0e0e0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  height: 100vh;
-  overflow: hidden;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .app {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: #1a1a1a;
-  padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #1a1a1a;
+    padding: 20px;
 }
 
 .container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  max-width: 800px;
-  margin: 0 auto;
-  width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.header {
+    width: 100%;
+    padding: 10px;
+}
+
+.title {
+    font-size: 22px;
 }
 
 .top-controls {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 15px;
-  margin-bottom: 25px;
-  align-items: end;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 15px;
+    /* margin-bottom: 25px; */
+    align-items: end;
+    padding: 10px;
 }
 
 .input-group {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .input-label {
-  color: #b0b0b0;
-  font-size: 12px;
-  margin-bottom: 6px;
-  font-weight: 500;
+    color: #b0b0b0;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 0;
 }
 
 .text-input {
-  background-color: #2a2a2a;
-  border: 1px solid #404040;
-  border-radius: 6px;
-  padding: 10px 12px;
-  color: #e0e0e0;
-  font-size: 14px;
+    background-color: #2a2a2a;
+    border: 1px solid #404040;
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: #e0e0e0;
+    font-size: 14px;
 }
 
 .text-input:focus {
-  outline: none;
-  border-color: #0066cc;
-  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
 }
 
 .text-input::placeholder {
-  color: #666;
+    color: #666;
 }
 
 .small-input {
-  width: 100px;
+    width: 100px;
 }
 
 .color-picker-btn {
-  background-color: #2a2a2a;
-  border: 1px solid #404040;
-  border-radius: 6px;
-  padding: 10px 15px;
-  color: #e0e0e0;
-  cursor: pointer;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s;
+    background-color: #2a2a2a;
+    border: 1px solid #404040;
+    border-radius: 6px;
+    padding: 10px 15px;
+    color: #e0e0e0;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
 }
 
 .color-picker-btn:hover {
-  background-color: #333;
-  border-color: #555;
+    background-color: #333;
+    border-color: #555;
 }
 
 .color-preview {
-  width: 16px;
-  height: 16px;
-  border-radius: 3px;
-  border: 1px solid #555;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    border: 1px solid #555;
 }
 
 .hidden-color-input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .image-section {
-  margin-bottom: 25px;
-  flex: 1;
-  min-height: 0;
+    /* margin-bottom: 25px; */
+    flex: 1;
+    min-height: 0;
+    padding: 10px;
 }
 
 .image-upload-area {
-  height: 100%;
-  min-height: 200px;
+    flex: 1;
+    min-height: 0;
 }
 
 .drop-zone {
-  border: 2px dashed #404040;
-  border-radius: 8px;
-  background-color: #2a2a2a;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  height: 100%;
-  min-height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
+    border: 2px dashed #404040;
+    border-radius: 8px;
+    background-color: #2a2a2a;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 100%;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .drop-zone:hover {
-  border-color: #0066cc;
-  background-color: #2d2d2d;
+    border-color: #0066cc;
+    background-color: #2d2d2d;
 }
 
 .drop-zone.drag-active {
-  border-color: #00aa44;
-  background-color: #1e3a1e;
-  border-style: solid;
+    border-color: #00aa44;
+    background-color: #1e3a1e;
+    border-style: solid;
 }
 
 .drop-zone.has-image {
-  border-style: solid;
-  border-color: #00aa44;
+    border-style: solid;
+    border-color: #00aa44;
 }
 
 .drop-zone-content {
-  text-align: center;
-  color: #888;
+    text-align: center;
+    color: #888;
 }
 
 .drop-icon {
-  font-size: 48px;
-  margin-bottom: 15px;
+    font-size: 48px;
+    margin-bottom: 15px;
 }
 
 .drop-text {
-  font-size: 16px;
-  font-weight: 500;
-  color: #b0b0b0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #b0b0b0;
 }
 
 .drop-subtext {
-  font-size: 14px;
-  color: #888;
-  margin-top: 5px;
+    font-size: 14px;
+    color: #888;
+    margin-top: 5px;
 }
 
 .image-preview-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
 .image-preview {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    object-fit: contain;
 }
 
 .image-overlay {
-  position: absolute;
-  bottom: 25px;
-  left: 25px;
-  right: 25px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 12px 16px;
-  border-radius: 6px;
-  font-size: 13px;
-  text-align: center;
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    right: 25px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    text-align: center;
 }
 
 .image-name {
-  font-weight: 500;
-  margin-bottom: 4px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+    font-weight: 500;
+    margin-bottom: 4px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .drop-hint {
-  color: #bbb;
-  font-size: 12px;
+    color: #bbb;
+    font-size: 12px;
 }
 
 .action-section {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
 }
 
 .main-btn {
-  background-color: #00aa44;
-  border: none;
-  border-radius: 8px;
-  padding: 15px 40px;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  transition: all 0.2s;
+    background-color: #00aa44;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 40px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin: 4px;
+}
+
+.second-btn {
+    background-color: #444;
+    border: none;
+    border-radius: 8px;
+    padding: 15px 40px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin: 4px;
 }
 
 .main-btn:hover:not(:disabled) {
-  background-color: #008833;
-  transform: translateY(-1px);
+    background-color: #008833;
+    transform: translateY(-1px);
 }
 
 .main-btn:disabled {
-  background-color: #444;
-  cursor: not-allowed;
-  transform: none;
+    background-color: #444;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .progress-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(26, 26, 26, 0.95);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(26, 26, 26, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .progress-content {
-  background-color: #2a2a2a;
-  padding: 30px;
-  border-radius: 12px;
-  border: 1px solid #404040;
-  min-width: 400px;
-  text-align: center;
+    background-color: #2a2a2a;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #404040;
+    min-width: 400px;
+    text-align: center;
 }
 
 .progress-title {
-  color: #ffffff;
-  font-size: 18px;
-  margin-bottom: 20px;
-  font-weight: 600;
+    color: #ffffff;
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
 .progress-bar-container {
-  background-color: #1a1a1a;
-  height: 8px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  overflow: hidden;
+    background-color: #1a1a1a;
+    height: 8px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    overflow: hidden;
 }
 
 .progress-bar {
-  background-color: #00aa44;
-  height: 100%;
-  border-radius: 4px;
-  transition: width 0.3s ease;
-  width: 0%;
+    background-color: #00aa44;
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
 }
 
 .progress-details {
-  color: #b0b0b0;
-  font-size: 14px;
-  margin-bottom: 20px;
+    color: #b0b0b0;
+    font-size: 14px;
+    margin-bottom: 20px;
 }
 
 .progress-percentage {
-  color: #ffffff;
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 10px;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
 
 .cancel-btn {
-  background-color: #cc4400;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 25px;
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.2s;
+    background-color: #cc4400;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 25px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s;
 }
 
 .cancel-btn:hover {
-  background-color: #aa3300;
+    background-color: #aa3300;
 }
 
 .completion-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(26, 26, 26, 0.95);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(26, 26, 26, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .completion-content {
-  background-color: #2a2a2a;
-  padding: 40px;
-  border-radius: 12px;
-  border: 1px solid #404040;
-  text-align: center;
-  max-width: 500px;
+    background-color: #2a2a2a;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #404040;
+    text-align: center;
+    max-width: 500px;
 }
 
 .completion-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
 }
 
 .completion-title.success {
-  color: #00aa44;
+    color: #00aa44;
 }
 
 .completion-title.error {
-  color: #cc4400;
+    color: #cc4400;
 }
 
 .completion-message {
-  color: #b0b0b0;
-  margin-bottom: 25px;
-  line-height: 1.5;
+    color: #b0b0b0;
+    margin-bottom: 25px;
+    line-height: 1.5;
 }
 
 .completion-actions {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
 }
 
 .secondary-btn {
-  background-color: #404040;
-  border: none;
-  border-radius: 6px;
-  padding: 12px 25px;
-  color: #e0e0e0;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.2s;
+    background-color: #404040;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 25px;
+    color: #e0e0e0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s;
 }
 
 .secondary-btn:hover {
-  background-color: #555;
+    background-color: #555;
 }
