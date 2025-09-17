@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { invoke } from '@tauri-apps/api/core';
+import { listen } from '@tauri-apps/api/event';
 import './App.css';
 
 interface ProcessConfig {
@@ -35,6 +36,8 @@ function App() {
   const [appState, setAppState] = useState<AppState>('idle');
   const [message, setMessage] = useState('');
   const [serverInput, setServerInput] = useState('');
+  const [dragActive, setDragActive] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -61,16 +64,75 @@ function App() {
     };
   }, [appState]);
 
+  useEffect(() => {
+    const unlisten = listen('tauri://file-drop', (event) => {
+      const files = event.payload as string[];
+      if (files && files.length > 0) {
+        const imagePath = files[0];
+        // Check if it's an image file
+        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+        const isImage = imageExtensions.some(ext =>
+          imagePath.toLowerCase().endsWith(ext)
+        );
+
+        if (isImage) {
+          setConfig(prev => ({ ...prev, image_path: imagePath }));
+          setImagePreview(`asset://localhost/${imagePath.replace(/\\/g, '/')}`);
+          setDragActive(false);
+        } else {
+          setMessage('Please drop an image file.');
+        }
+      }
+    });
+
+    const unlistenHover = listen('tauri://file-drop-hover', () => {
+      setDragActive(true);
+    });
+
+    const unlistenCancelled = listen('tauri://file-drop-cancelled', () => {
+      setDragActive(false);
+    });
+
+    return () => {
+      unlisten.then(fn => fn());
+      unlistenHover.then(fn => fn());
+      unlistenCancelled.then(fn => fn());
+    };
+  }, []);
+
   const selectImage = async () => {
     try {
       const selected = await invoke<string | null>('select_image_file');
       if (selected) {
         setConfig(prev => ({ ...prev, image_path: selected }));
+        // Convert file path to preview URL for local files
+        setImagePreview(`asset://localhost/${selected.replace(/\\/g, '/')}`);
       }
     } catch (error) {
       console.error('Failed to select image:', error);
       setMessage('Failed to select image file.');
     }
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Tauri handles file drops through events, not through drag & drop API
   };
 
   const parseServerAddress = (address: string) => {
@@ -143,6 +205,7 @@ function App() {
       tile_size: 256,
     });
     setServerInput('');
+    setImagePreview(null);
     resetApp();
   };
 
@@ -153,10 +216,7 @@ function App() {
   return (
     <div className="app">
       <div className="container">
-        <div className="header">
-          <h1 className="title">Floor Layout Uploader</h1>
-        </div>
-
+      
         {/* Top Controls */}
         <div className="top-controls">
           <div className="input-group">
@@ -207,20 +267,36 @@ function App() {
           </div>
         </div>
 
-        {/* Image Selection */}
+        {/* Image Section - Updated with drag and drop */}
         <div className="image-section">
           <div className="input-group">
             <label className="input-label">Image File</label>
-            <div className="image-controls">
-              <button
-                className="select-btn"
-                onClick={selectImage}
-                disabled={appState === 'processing'}
+            <div className="image-upload-area">
+              <div
+                className={`drop-zone ${dragActive ? 'drag-active' : ''} ${config.image_path ? 'has-image' : ''}`}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                onClick={appState !== 'processing' ? selectImage : undefined}
               >
-                Select Image
-              </button>
-              <div className="image-path">
-                {config.image_path ? getFileName(config.image_path) : 'No image selected'}
+                {imagePreview ? (
+                  <div className="image-preview-container">
+                    <img src={imagePreview} alt="Preview" className="image-preview" />
+                    <div className="image-overlay">
+                      <div className="image-name">{getFileName(config.image_path)}</div>
+                      <div className="drop-hint">Click to change or drop new image</div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="drop-zone-content">
+                    <div className="drop-icon">📁</div>
+                    <div className="drop-text">
+                      <div>Drag & drop an image here</div>
+                      <div className="drop-subtext">or click to select</div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
