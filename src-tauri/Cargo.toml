@@ -1,8 +1,8 @@
 [package]
-name = "layout-uploader"
+name = "iviva-layout-uploader"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "Iviva Location layout upload tool"
+authors = ["Iviva"]
 edition = "2021"
 
 [lib]

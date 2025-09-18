@@ -1,34 +1,43 @@
 {
-  "name": "layout-uploader",
-  "private": true,
-  "version": "0.1.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "tauri": "tauri"
-  },
-  "dependencies": {
-    "@tauri-apps/api": "^2.0.0",
-    "@tauri-apps/plugin-dialog": "^2.0.0",
-    "@tauri-apps/plugin-fs": "^2.0.0",
-    "@tauri-apps/plugin-http": "^2.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "uuid": "^9.0.1"
-  },
-  "devDependencies": {
-    "@tauri-apps/cli": "^2.0.0",
-    "@types/node": "^20.10.0",
-    "@types/react": "^18.2.43",
-    "@types/react-dom": "^18.2.17",
-    "@types/uuid": "^9.0.7",
-    "@vitejs/plugin-react": "^4.2.1",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.32",
-    "tailwindcss": "^3.3.6",
-    "typescript": "^5.2.2",
-    "vite": "^5.0.8"
-  }
+	"name": "iviva-layout-uploader",
+	"private": true,
+	"version": "0.1.0",
+	"description": "Iviva Location layout upload tool",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"tauri": "tauri",
+		"tauri:dev": "tauri dev",
+		"tauri:build": "tauri build",
+		"lint": "eslint src --ext .ts,.tsx",
+		"lint:fix": "eslint src --ext .ts,.tsx --fix",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@tauri-apps/api": "^2.0.0",
+		"@tauri-apps/plugin-dialog": "^2.0.0",
+		"@tauri-apps/plugin-fs": "^2.0.0",
+		"@tauri-apps/plugin-http": "^2.0.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"uuid": "^9.0.1"
+	},
+	"devDependencies": {
+		"@tauri-apps/cli": "^2.0.0",
+		"@types/node": "^20.10.0",
+		"@types/react": "^18.2.43",
+		"@types/react-dom": "^18.2.17",
+		"@types/uuid": "^9.0.7",
+		"@vitejs/plugin-react": "^4.2.1",
+		"autoprefixer": "^10.4.16",
+		"eslint": "^8.45.0",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"eslint-plugin-react-refresh": "^0.4.0",
+		"postcss": "^8.4.32",
+		"tailwindcss": "^3.3.6",
+		"typescript": "^5.2.2",
+		"vite": "^5.0.8"
+	}
 }

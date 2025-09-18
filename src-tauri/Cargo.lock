@@ -2248,6 +2248,24 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 
 [[package]]
+name = "iviva-layout-uploader"
+version = "0.1.0"
+dependencies = [
+ "image",
+ "reqwest 0.11.27",
+ "rfd",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-fs",
+ "tauri-plugin-http",
+ "tauri-plugin-opener",
+ "tokio",
+ "uuid",
+]
+
+[[package]]
 name = "javascriptcore-rs"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2355,24 +2373,6 @@ dependencies = [
  "html5ever",
  "indexmap 2.11.3",
  "selectors",
-]
-
-[[package]]
-name = "layout-uploader"
-version = "0.1.0"
-dependencies = [
- "image",
- "reqwest 0.11.27",
- "rfd",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-fs",
- "tauri-plugin-http",
- "tauri-plugin-opener",
- "tokio",
- "uuid",
 ]
 
 [[package]]

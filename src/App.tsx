@@ -86,7 +86,7 @@ function App() {
                         const dataUrl = URL.createObjectURL(blob);
                         setImagePreview(dataUrl);
                     })
-                    .catch((error) => {
+                    .catch(() => {
                         setImagePreview(null);
                     });
             }
@@ -219,7 +219,7 @@ function App() {
         <div className="app">
             <div className="container">
                 <div className="header">
-                    <h1 className="title">Layout Uploader</h1>
+                    <h1 className="title">Iviva Layout Uploader</h1>
                 </div>
 
                 {/* Top Controls */}
