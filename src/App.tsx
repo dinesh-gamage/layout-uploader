@@ -51,7 +51,9 @@ function App() {
                     const progressData = await invoke<ProgressUpdate | null>('get_progress');
                     if (progressData) {
                         setProgress(progressData);
-                        if (progressData.status === 'Cancelled') {
+                        // Only handle cancellation from progress if we're still in processing state
+                        // This prevents overriding manual cancellation state changes
+                        if (progressData.status === 'Cancelled' && appState === 'processing') {
                             setAppState('idle');
                             setMessage('Processing was cancelled.');
                         }
@@ -66,85 +68,6 @@ function App() {
             if (interval) clearInterval(interval);
         };
     }, [appState]);
-
-    // useEffect(() => {
-    //     const dropZone = dropRef.current;
-    //     if (!dropZone) return;
-
-    //     const handleDragOver = (e: DragEvent) => {
-    //         console.log('DOM dragover event');
-    //         e.preventDefault();
-    //         e.stopPropagation();
-    //         setDragActive(true);
-    //     };
-
-    //     const handleDragEnter = (e: DragEvent) => {
-    //         console.log('DOM dragenter event');
-    //         e.preventDefault();
-    //         e.stopPropagation();
-    //         setDragActive(true);
-    //     };
-
-    //     const handleDragLeave = (e: DragEvent) => {
-    //         console.log('DOM dragleave event');
-    //         e.preventDefault();
-    //         e.stopPropagation();
-    //         // Only set dragActive to false if we're leaving the drop zone entirely
-    //         if (!dropZone.contains(e.relatedTarget as Node)) {
-    //             setDragActive(false);
-    //         }
-    //     };
-
-    //     const handleDrop = (e: DragEvent) => {
-    //         console.log('DOM drop event', e.dataTransfer?.files);
-    //         e.preventDefault();
-    //         e.stopPropagation();
-    //         setDragActive(false);
-
-    //         if (appState === 'processing') return;
-
-    //         const files = e.dataTransfer?.files;
-    //         if (files && files.length > 0) {
-    //             const file = files[0];
-    //             console.log('Dropped file:', file.name, file.type, file);
-    //             const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/webp'];
-
-    //             if (validTypes.includes(file.type)) {
-    //                 const filePath = (file as any).path || file.name;
-    //                 console.log('Setting file path:', filePath);
-    //                 setConfig(prev => ({ ...prev, image_path: filePath }));
-
-    //                 // Create preview
-    //                 const reader = new FileReader();
-    //                 reader.onload = (event) => {
-    //                     setImagePreview(event.target?.result as string);
-    //                 };
-    //                 reader.readAsDataURL(file);
-
-    //                 setMessage('');
-    //             } else {
-    //                 console.log('Invalid file type:', file.type);
-    //                 setMessage('Please drop a valid image file.');
-    //             }
-    //         } else {
-    //             console.log('No files in drop event');
-    //         }
-    //     };
-
-    //     // Add event listeners
-    //     dropZone.addEventListener('dragover', handleDragOver);
-    //     dropZone.addEventListener('dragenter', handleDragEnter);
-    //     dropZone.addEventListener('dragleave', handleDragLeave);
-    //     dropZone.addEventListener('drop', handleDrop);
-
-    //     // Cleanup
-    //     return () => {
-    //         dropZone.removeEventListener('dragover', handleDragOver);
-    //         dropZone.removeEventListener('dragenter', handleDragEnter);
-    //         dropZone.removeEventListener('dragleave', handleDragLeave);
-    //         dropZone.removeEventListener('drop', handleDrop);
-    //     };
-    // }, [appState]);
 
     useEffect(() => {
 
@@ -161,7 +84,7 @@ function App() {
                         const uint8Array = new Uint8Array(fileData);
                         const blob = new Blob([uint8Array]);
                         const dataUrl = URL.createObjectURL(blob);
-                        setImagePreview(null);
+                        setImagePreview(dataUrl);
                     })
                     .catch((error) => {
                         setImagePreview(null);
@@ -169,11 +92,11 @@ function App() {
             }
         });
 
-        const unlistenDragEnter = listen('tauri://drag-enter', (event) => {
+        const unlistenDragEnter = listen('tauri://drag-enter', () => {
             setDragActive(true)
         });
 
-        const unlistenDragLeave = listen('tauri://drag-leave', (event) => {
+        const unlistenDragLeave = listen('tauri://drag-leave', () => {
             setDragActive(false)
         });
 
@@ -239,6 +162,7 @@ function App() {
             return;
         }
 
+        // Clear any previous state
         setAppState('processing');
         setProgress({ current: 0, total: 0, zoom_level: 0, percentage: 0, status: 'Starting...' });
         setMessage('');
@@ -256,9 +180,13 @@ function App() {
     const cancelProcessing = async () => {
         try {
             await invoke('cancel_processing');
-            setMessage('Cancelling...');
+            // Immediately update the UI state to show cancellation
+            setAppState('idle');
+            setMessage('Processing was cancelled.');
+            setProgress(null);
         } catch (error) {
             console.error('Failed to cancel:', error);
+            setMessage('Failed to cancel processing.');
         }
     };
 

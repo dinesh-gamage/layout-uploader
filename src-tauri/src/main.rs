@@ -309,6 +309,16 @@ async fn start_processing(
     progress_state: State<'_, ProgressState>,
     cancel_state: State<'_, CancelState>,
 ) -> Result<String, String> {
+    // Clear any previous state before starting new processing
+    *cancel_state.lock().await = false;
+    *progress_state.lock().await = Some(ProgressUpdate {
+        current: 0,
+        total: 0,
+        zoom_level: 0,
+        percentage: 0,
+        status: "Starting...".to_string(),
+    });
+    
     let processor = TileProcessor::new(config.tile_size);
 
     match processor
