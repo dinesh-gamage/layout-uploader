@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Gradient similar to iviva favicon -->
+        <linearGradient id="ringGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="18%" stop-color="#630CCE" />
+            <stop offset="100%" stop-color="#0d59f8" />
+        </linearGradient>
+    </defs>
+
+    <!-- Main ring -->
+    <circle cx="256" cy="256" r="200" fill="url(#ringGradient)" />
+    <circle cx="256" cy="256" r="120" fill="#FFFFFF" />
+  
+    <!-- Accent dot -->
+    <circle cx="450" cy="60" r="40" fill="#0d59f8" />
+    
+    <!-- Inner layout -->
+    <!-- Subtle grid -->
+    <g opacity="0.3">
+        <line x1="190" y1="190" x2="322" y2="190" stroke="#6366F1" stroke-width="1.5" />
+        <line x1="190" y1="256" x2="322" y2="256" stroke="#6366F1" stroke-width="1.5" />
+        <line x1="190" y1="322" x2="322" y2="322" stroke="#6366F1" stroke-width="1.5" />
+        <line x1="190" y1="190" x2="190" y2="322" stroke="#6366F1" stroke-width="1.5" />
+        <line x1="256" y1="190" x2="256" y2="322" stroke="#6366F1" stroke-width="1.5" />
+        <line x1="322" y1="190" x2="322" y2="322" stroke="#6366F1" stroke-width="1.5" />
+    </g>
+    <!-- Small layout tiles -->
+    <g opacity="0.4">
+        <rect x="200" y="200" width="20" height="20" fill="#6366F1" rx="2" />
+        <rect x="292" y="200" width="20" height="20" fill="#6366F1" rx="2" />
+        <rect x="200" y="292" width="20" height="20" fill="#6366F1" rx="2" />
+        <rect x="292" y="292" width="20" height="20" fill="#6366F1" rx="2" />
+    </g>
+    <!-- Upload indicator -->
+    <g opacity="0.7">
+        <!-- Larger arrow head -->
+        <polygon points="256,215 268,235 244,235" fill="#6366F1" />
+        <!-- Thicker arrow shaft -->
+        <rect x="250" y="235" width="12" height="25" fill="#6366F1" rx="2" />
+        <!-- Wider upload base line -->
+        <rect x="235" y="275" width="42" height="3" fill="#6366F1" rx="1.5" />
+    </g>
+</svg>
