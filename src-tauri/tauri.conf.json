@@ -39,6 +39,19 @@
             "signingIdentity": null,
             "entitlements": null
         },
+        "windows": {
+            "certificateThumbprint": null,
+            "digestAlgorithm": "sha256",
+            "timestampUrl": "",
+            "wix": {
+                "language": "en-US"
+            }
+        },
+        "linux": {
+            "deb": {
+                "depends": []
+            }
+        },
         "shortDescription": "Iviva Location layout upload tool",
         "longDescription": "Iviva Location layout upload tool for Mac - Upload and configure location layouts with tiled image processing"
     }
