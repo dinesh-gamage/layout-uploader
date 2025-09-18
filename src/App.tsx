@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import './App.css';
@@ -20,7 +20,6 @@ interface ProgressUpdate {
     status: string;
 }
 
-
 const DefaultConfig: ProcessConfig = {
     image_path: '',
     server_address: '',
@@ -34,13 +33,14 @@ type AppState = 'idle' | 'processing' | 'completed' | 'error';
 
 function App() {
     const [config, setConfig] = useState<ProcessConfig>(DefaultConfig);
-
     const [progress, setProgress] = useState<ProgressUpdate | null>(null);
     const [appState, setAppState] = useState<AppState>('idle');
     const [message, setMessage] = useState('');
     const [serverInput, setServerInput] = useState('');
     const [dragActive, setDragActive] = useState(false);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+    const dropRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -67,48 +67,121 @@ function App() {
         };
     }, [appState]);
 
-    useEffect(() => {
-        const unlisten = listen('tauri://file-drop', async (event) => {
-            const files = event.payload as string[];
-            if (files && files.length > 0) {
-                const imagePath = files[0];
-                // Check if it's an image file
-                const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
-                const isImage = imageExtensions.some(ext =>
-                    imagePath.toLowerCase().endsWith(ext)
-                );
+    // useEffect(() => {
+    //     const dropZone = dropRef.current;
+    //     if (!dropZone) return;
 
-                if (isImage) {
-                    setConfig(prev => ({ ...prev, image_path: imagePath }));
-                    try {
-                        const fileData = await invoke<number[]>('read_file_as_bytes', { path: imagePath });
+    //     const handleDragOver = (e: DragEvent) => {
+    //         console.log('DOM dragover event');
+    //         e.preventDefault();
+    //         e.stopPropagation();
+    //         setDragActive(true);
+    //     };
+
+    //     const handleDragEnter = (e: DragEvent) => {
+    //         console.log('DOM dragenter event');
+    //         e.preventDefault();
+    //         e.stopPropagation();
+    //         setDragActive(true);
+    //     };
+
+    //     const handleDragLeave = (e: DragEvent) => {
+    //         console.log('DOM dragleave event');
+    //         e.preventDefault();
+    //         e.stopPropagation();
+    //         // Only set dragActive to false if we're leaving the drop zone entirely
+    //         if (!dropZone.contains(e.relatedTarget as Node)) {
+    //             setDragActive(false);
+    //         }
+    //     };
+
+    //     const handleDrop = (e: DragEvent) => {
+    //         console.log('DOM drop event', e.dataTransfer?.files);
+    //         e.preventDefault();
+    //         e.stopPropagation();
+    //         setDragActive(false);
+
+    //         if (appState === 'processing') return;
+
+    //         const files = e.dataTransfer?.files;
+    //         if (files && files.length > 0) {
+    //             const file = files[0];
+    //             console.log('Dropped file:', file.name, file.type, file);
+    //             const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/bmp', 'image/webp'];
+
+    //             if (validTypes.includes(file.type)) {
+    //                 const filePath = (file as any).path || file.name;
+    //                 console.log('Setting file path:', filePath);
+    //                 setConfig(prev => ({ ...prev, image_path: filePath }));
+
+    //                 // Create preview
+    //                 const reader = new FileReader();
+    //                 reader.onload = (event) => {
+    //                     setImagePreview(event.target?.result as string);
+    //                 };
+    //                 reader.readAsDataURL(file);
+
+    //                 setMessage('');
+    //             } else {
+    //                 console.log('Invalid file type:', file.type);
+    //                 setMessage('Please drop a valid image file.');
+    //             }
+    //         } else {
+    //             console.log('No files in drop event');
+    //         }
+    //     };
+
+    //     // Add event listeners
+    //     dropZone.addEventListener('dragover', handleDragOver);
+    //     dropZone.addEventListener('dragenter', handleDragEnter);
+    //     dropZone.addEventListener('dragleave', handleDragLeave);
+    //     dropZone.addEventListener('drop', handleDrop);
+
+    //     // Cleanup
+    //     return () => {
+    //         dropZone.removeEventListener('dragover', handleDragOver);
+    //         dropZone.removeEventListener('dragenter', handleDragEnter);
+    //         dropZone.removeEventListener('dragleave', handleDragLeave);
+    //         dropZone.removeEventListener('drop', handleDrop);
+    //     };
+    // }, [appState]);
+
+    useEffect(() => {
+
+        const unlistenDrop = listen('tauri://drag-drop', (event) => {
+            setDragActive(false)
+            const dropData = event.payload as { paths: string[], position: { x: number, y: number } };
+
+            if (dropData && dropData.paths && dropData.paths.length > 0) {
+                const filePath = dropData.paths[0];
+                setConfig(prev => ({ ...prev, image_path: filePath }));
+
+                invoke<number[]>('read_file_as_bytes', { path: filePath })
+                    .then(fileData => {
                         const uint8Array = new Uint8Array(fileData);
                         const blob = new Blob([uint8Array]);
                         const dataUrl = URL.createObjectURL(blob);
-                        setImagePreview(dataUrl);
-                    } catch (readError) {
-                        console.error('Failed to read dropped file:', readError);
-                        setImagePreview(`asset://localhost/${imagePath.replace(/\\/g, '/')}`);
-                    }
-                    setDragActive(false);
-                } else {
-                    setMessage('Please drop an image file.');
-                }
+                        setImagePreview(null);
+                    })
+                    .catch((error) => {
+                        setImagePreview(null);
+                    });
             }
         });
 
-        const unlistenHover = listen('tauri://file-drop-hover', () => {
-            setDragActive(true);
+        const unlistenDragEnter = listen('tauri://drag-enter', (event) => {
+            setDragActive(true)
         });
 
-        const unlistenCancelled = listen('tauri://file-drop-cancelled', () => {
-            setDragActive(false);
+        const unlistenDragLeave = listen('tauri://drag-leave', (event) => {
+            setDragActive(false)
         });
 
         return () => {
-            unlisten.then(fn => fn());
-            unlistenHover.then(fn => fn());
-            unlistenCancelled.then(fn => fn());
+            console.log('Cleaning up Tauri file drag &drop listener');
+            unlistenDrop.then(f => f());
+            unlistenDragEnter.then(f => f());
+            unlistenDragLeave.then(f => f());
         };
     }, []);
 
@@ -123,37 +196,16 @@ function App() {
                     const blob = new Blob([uint8Array]);
                     const dataUrl = URL.createObjectURL(blob);
                     setImagePreview(dataUrl);
+                    setMessage('');
                 } catch (readError) {
                     console.error('Failed to read file for preview:', readError);
-                    // Fallback to asset URL
-                    setImagePreview(`asset://localhost/${selected.replace(/\\/g, '/')}`);
+                    setImagePreview(null);
                 }
             }
         } catch (error) {
             console.error('Failed to select image:', error);
             setMessage('Failed to select image file.');
         }
-    };
-
-    const handleDragEnter = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
-
-    const handleDragLeave = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
-
-    const handleDragOver = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
-
-    const handleDrop = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        // Tauri handles file drops through events, not through drag & drop API
     };
 
     const parseServerAddress = (address: string) => {
@@ -228,6 +280,7 @@ function App() {
         setServerInput('');
         setImagePreview(null);
         resetApp();
+        setDragActive(false)
     };
 
     const getFileName = (path: string) => {
@@ -297,16 +350,15 @@ function App() {
                         <label className="input-label">Image File</label>
                         <div className="image-upload-area">
                             <div
+                                ref={dropRef}
                                 className={`drop-zone ${dragActive ? 'drag-active' : ''} ${config.image_path ? 'has-image' : ''}`}
-                                onDragEnter={handleDragEnter}
-                                onDragLeave={handleDragLeave}
-                                onDragOver={handleDragOver}
-                                onDrop={handleDrop}
                                 onClick={appState !== 'processing' ? selectImage : undefined}
                             >
-                                {imagePreview ? (
+                                {(imagePreview || !!getFileName(config.image_path)) ? (
                                     <div className="image-preview-container">
-                                        <div style={{ backgroundImage: `url(${imagePreview})` }} className="image-preview" />
+                                        <div style={{ backgroundImage: `url(${imagePreview})` }} className="image-preview" >
+                                            {!imagePreview && <div className='no-preview' >No preview available</div>}
+                                        </div>
                                         <div className="image-overlay">
                                             <div className="image-name">{getFileName(config.image_path)}</div>
                                             <div className="drop-hint">Click to change or drop new image</div>
@@ -339,6 +391,13 @@ function App() {
                         Cancel
                     </button>
                 </div>
+
+                {/* Message display */}
+                {message && (
+                    <div className={`message ${message.includes('Error') || message.includes('Failed') ? 'error' : 'info'}`}>
+                        {message}
+                    </div>
+                )}
 
                 {/* Progress Overlay */}
                 {appState === 'processing' && (

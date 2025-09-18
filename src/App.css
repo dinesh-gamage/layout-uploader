@@ -163,7 +163,7 @@ body {
 .drop-zone.drag-active {
     border-color: #00aa44;
     background-color: #1e3a1e;
-    border-style: solid;
+    /* border-style: solid; */
 }
 
 .drop-zone.has-image {
@@ -209,6 +209,13 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+.image-preview .no-preview {
+    text-align: center;
+    font-style: italic;
+    color: rgba(227, 227, 227, 0.42);
+    padding-top: 40px;
 }
 
 .image-overlay {
