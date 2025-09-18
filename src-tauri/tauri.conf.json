@@ -30,7 +30,9 @@
             "appimage"
         ],
         "icon": [
-            "icons/icon.icns"
+            "icons/icon.icns",
+            "icons/icon.ico",
+            "icons/icon.png"
         ],
         "macOS": {
             "bundleName": "Iviva Layout Uploader",
