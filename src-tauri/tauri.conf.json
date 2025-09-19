@@ -1,61 +1,59 @@
 {
-    "productName": "Iviva Layout Uploader",
-    "version": "0.1.0",
-    "identifier": "com.iviva.layoutuploader",
-    "build": {
-        "beforeDevCommand": "npm run dev",
-        "devUrl": "http://localhost:1420",
-        "beforeBuildCommand": "npm run build",
-        "frontendDist": "../dist"
-    },
-    "app": {
-        "windows": [
-            {
-                "title": "Iviva Layout Uploader",
-                "width": 800,
-                "height": 600,
-                "minWidth": 600,
-                "minHeight": 450,
-                "resizable": true
-            }
-        ],
-        "security": {
-            "csp": null
-        }
-    },
-    "bundle": {
-        "active": true,
-        "targets": [
-            "dmg",
-            "appimage",
-            "nsis"
-        ],
-        "icon": [
-            "icons/icon.icns",
-            "icons/icon.ico",
-            "icons/icon.png"
-        ],
-        "macOS": {
-            "bundleName": "Iviva Layout Uploader",
-            "frameworks": [],
-            "minimumSystemVersion": "10.13",
-            "signingIdentity": null,
-            "entitlements": null
-        },
-        "windows": {
-            "certificateThumbprint": null,
-            "digestAlgorithm": "sha256",
-            "timestampUrl": "",
-            "wix": {
-                "language": "en-US"
-            }
-        },
-        "linux": {
-            "deb": {
-                "depends": []
-            }
-        },
-        "shortDescription": "Iviva Location layout upload tool",
-        "longDescription": "Iviva Location layout upload tool for Mac - Upload and configure location layouts with tiled image processing"
+  "productName": "Iviva Layout Uploader",
+  "version": "0.1.0",
+  "identifier": "com.iviva.layoutuploader",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devPath": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "distDir": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Iviva Layout Uploader",
+        "width": 800,
+        "height": 600,
+        "minWidth": 600,
+        "minHeight": 450,
+        "resizable": true,
+        "closable": true
+      }
+    ],
+    "security": {
+      "csp": null
     }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["dmg", "appimage", "nsis"],
+    "icon": [
+      "icons/icon.icns",
+      "icons/icon.ico",
+      "icons/icon.png"
+    ],
+    "macOS": {
+      "bundleName": "Iviva Layout Uploader",
+      "frameworks": [],
+      "minimumSystemVersion": "10.13",
+      "signingIdentity": null,
+      "entitlements": null
+    },
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "",
+      "wix": {
+        "language": "en-US"
+      },
+      "webviewInstallMode": "downloadBootstrapper"
+    },
+    "linux": {
+      "deb": {
+        "depends": []
+      }
+    },
+    "shortDescription": "Iviva Location layout upload tool",
+    "longDescription": "Iviva Location layout upload tool for Mac - Upload and configure location layouts with tiled image processing"
+  }
 }
