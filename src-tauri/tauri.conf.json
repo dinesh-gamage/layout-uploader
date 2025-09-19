@@ -2,12 +2,6 @@
   "productName": "Iviva Layout Uploader",
   "version": "0.1.0",
   "identifier": "com.iviva.layoutuploader",
-  "build": {
-    "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:1420",
-    "beforeBuildCommand": "npm run build",
-    "distDir": "../dist"
-  },
   "app": {
     "windows": [
       {
@@ -22,11 +16,19 @@
     ],
     "security": {
       "csp": null
-    }
+    },
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
   },
   "bundle": {
     "active": true,
-    "targets": ["dmg", "appimage", "nsis"],
+    "targets": [
+      "dmg",
+      "appimage",
+      "nsis"
+    ],
     "icon": [
       "icons/icon.icns",
       "icons/icon.ico",
@@ -45,8 +47,7 @@
       "timestampUrl": "",
       "wix": {
         "language": "en-US"
-      },
-      "webviewInstallMode": "downloadBootstrapper"
+      }
     },
     "linux": {
       "deb": {
