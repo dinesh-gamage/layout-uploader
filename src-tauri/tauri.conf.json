@@ -27,7 +27,8 @@
         "active": true,
         "targets": [
             "dmg",
-            "appimage"
+            "appimage",
+            "nsis"
         ],
         "icon": [
             "icons/icon.icns",
